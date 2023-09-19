@@ -16,15 +16,20 @@
           <div class="title">
             <h1>Language Model mit RNN</h1>
           </div>
-          <a href="/Documentation.html">
+          <a href="/documentation.html">
             <button>
               <div>Dokumentation</div>
             </button>
           </a>
         </header>
-        <h2>Start typing</h2>
-        <input type="text" id="textInput" placeholder="Type here" />
-        <input type="number" id="predictedInt" value="2"/>
+        <div class="autocomplete-container">
+          <textarea type="text" id="textInput" placeholder="Start Typing" rows="6"></textarea>
+          <textarea class="suggestions" id="suggestions" rows="6" disabled></textarea>
+        </div>
+        <div class="slider-container">
+          <input type="range" min="1" max="10" id="predictedInt" value="2" class="custom-slider"/>
+          <div id="slider-value">1</div>
+        </div>
         <p id="output"></p> 
       </main>
 <!-- Import the main script file -->

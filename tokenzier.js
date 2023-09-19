@@ -1,23 +1,22 @@
-async function getMaxSequenceLength() {
-    const myPath = './max_sequence_len.txt';
+async function getMaxSequenceLength(type) {
+
+    const myPath = `./tfjs_models/${type}/max_sequence_len.txt`;
     const response = await fetch(myPath);
     const data = await response.text();
     return data;
 }
 
-async function getWordIndex() {
-    const myPath = './vocab.json';
+async function getWordIndex(type) {
+    const myPath = `./tfjs_models/${type}/wordIndex.json`;
     const response = await fetch(myPath);
     const data = await response.json();
     return data;
 }
 
 class Tokenizer {
-    constructor() {
-        // In einem Konstruktor können keine async/await-Funktionen verwendet werden.
-        // Stattdessen rufe die asynchronen Funktionen in einem Promise auf.
-        this.wordIndexPromise = getWordIndex();
-        this.maxSequenceLenPromise = getMaxSequenceLength();
+    constructor(type) {
+        this.wordIndexPromise = getWordIndex(type);
+        this.maxSequenceLenPromise = getMaxSequenceLength(type);
     }
 
     async initialize() {
