@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Language Model mit RNN</title>
+  <title>Next Word Prediction</title>
 
   <!-- Import TensorFlow.js 3.0-->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0/dist/tf.min.js"></script>
@@ -14,7 +14,7 @@
     <main class="index">
         <header class="nav-nav-header">
           <div class="title">
-            <h1>Language Model mit RNN</h1>
+            <h1>Next Word Prediction</h1>
           </div>
           <a href="/documentation.html">
             <button>
@@ -24,12 +24,13 @@
         </header>
         <div class="autocomplete-container">
           <textarea type="text" id="textInput" placeholder="Start Typing" rows="6"></textarea>
-          <textarea class="suggestions" id="suggestions" rows="6" disabled></textarea>
+          <textarea type="text" class="suggestions" id="suggestions" rows="6" disabled></textarea>
         </div>
         <div class="slider-container">
           <input type="range" min="1" max="10" id="predictedInt" value="2" class="custom-slider"/>
           <div id="slider-value">1</div>
         </div>
+        <input
         <p id="output"></p> 
       </main>
 <!-- Import the main script file -->
