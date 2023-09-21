@@ -149,3 +149,52 @@ textarea {
   padding: 5px 10px;
   border-radius: 5px;
 }
+
+
+        /* Stil für den Schalter */
+        .toggle-switch {
+          position: relative;
+          display: inline-block;
+          width: 120px;
+          height: 50px;
+          background-color: #ccc;
+      }
+
+      .slider {
+          position: absolute;
+          height: 40px;
+          width: 40px;
+          left: 10px;
+          bottom: 4px;
+          background-color: white;
+          transition: 0.4s;
+      }
+
+      .slider-active {
+        transform: translate(60px);
+      }
+
+      .switch-active {
+        background-color: black;
+      }
+
+      /* Schriftart und Ausrichtung des Texts */
+      .toggle-label {
+          font-family: Arial, sans-serif;
+          text-align: center;
+          display: inline-block;
+          margin: 0 10px;
+          position: absolute;
+          top: 15px;
+      }
+
+      #FFNN {
+        left: 5px;
+        color: white;
+        display: none;
+      }
+
+      #RNN {
+        right: 5px;
+        color: black;
+      }

@@ -2,9 +2,11 @@ const textInput = document.getElementById('textInput');
 const predictedInt = document.getElementById('predictedInt');
 const suggestions = document.getElementById('suggestions');
 const slidervalue = document.getElementById('slider-value');
+const toggleModel = document.getElementById('toggleModel');
 let predictNextWords = 2;
 let model;
 let inputText = null;
+let currentModel = "RNN";
 
 function main(){
     console.log("DOM Content loaded");
@@ -17,6 +19,7 @@ async function loadModel(type) {
     try {
         model = await tf.loadLayersModel(modelPath);
         console.log('Modell geladen');
+        predict();
     } catch (error) {
         console.error('Fehler beim Laden des Modells:', error);
     }
@@ -50,16 +53,23 @@ function SetPredictedInt(event) {
 }
 
 async function predictNextWordsUsingModel(model, inputText, numWords) {
+    console.log("predictNextWordsUsingModel");
+    let predictedIndex;
     const tokenizer = new Tokenizer("RNN");
         await tokenizer.initialize();
         for (let i = 0; i < numWords; i++) {
             const tokenList = await tokenizer.textsToSequences(inputText);
             const paddedTokenList = await tokenizer.padSequences([tokenList]);
             let predicted = model.predict(tf.tensor(paddedTokenList), [1, 1]);
-            let predictedIndex = argMax(predicted.dataSync());
+            if (currentModel == "RNN") {
+                predictedIndex = argMax(predicted.dataSync());
+            }
+            else {
+                predictedIndex = predicted.dataSync();
+                predictedIndex = predictedIndex.indexOf(Math.max(...predictedIndex));
+            }
             let outputWord = await tokenizer.getWordByIndex(predictedIndex);
             inputText += " " + outputWord;
-            //console.log(inputText);
         }
     return inputText;
   }
@@ -68,9 +78,36 @@ function focusTextInput() {
     textInput.focus();
 }
 
+function ToggleModel(e) {
+    ToggleModelVisual();
+    loadModel(currentModel);
+    predict();
+}
+
+
+function ToggleModelVisual() {
+    const RNN = document.getElementById('RNN');
+    const FFNN = document.getElementById('FFNN');
+    const slider = document.getElementById('slider');
+    if (currentModel == "RNN") {
+        currentModel = "FFNN";
+        RNN.style.display = "none";
+        FFNN.style.display = "block";
+        slider.classList.add("slider-active");
+        toggleModel.classList.add("switch-active");
+    }
+
+    else {
+        currentModel = "RNN";
+        RNN.style.display = "block";
+        FFNN.style.display = "none";
+        slider.classList.remove("slider-active");
+        toggleModel.classList.remove("switch-active");
+    }
+}
+
 textInput.addEventListener('input', HandleTextInput);
 predictedInt.addEventListener('input', SetPredictedInt);
+toggleModel.addEventListener('click', ToggleModel);
 
 document.addEventListener('DOMContentLoaded', main);
-
-
