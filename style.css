@@ -17,7 +17,8 @@ body{
   justify-content:center;
   width:100%;
   position:relative;
-  overflow:hidden
+  overflow:hidden;
+  gap: 45px;
 }
 .nav-nav-header{
   padding:34px 32px 34px 32px;
@@ -27,7 +28,7 @@ body{
   align-items:center;
   justify-content:center;
   flex-shrink:0;
-  width:1512px;
+  width:100%;
   position:relative
 }
 .title{
@@ -48,7 +49,8 @@ h1{
   height:34px
 }
 button{
-  background:#7198ff;
+  background:black;
+  color: white;
   border-radius:7px!important;
   padding:8px 45px 8px 45px;
   display:flex;
@@ -142,59 +144,94 @@ textarea {
 
 #slider-value {
   position: absolute;
-  top: -30px; /* Position über dem Slider-Daumen */
+  top: -33px; /* Position über dem Slider-Daumen */
   left: 50%; /* Horizontal zentrieren */
   transform: translateX(-50%); /* Horizontal zentrieren */
-  background-color: white;
   padding: 5px 10px;
   border-radius: 5px;
+  font-size: 25px;
 }
 
 
-        /* Stil für den Schalter */
-        .toggle-switch {
-          position: relative;
-          display: inline-block;
-          width: 120px;
-          height: 50px;
-          background-color: #ccc;
-      }
+  /* Stil für den Schalter */
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    height: 50px;
+    background-color: #ccc;
+}
 
-      .slider {
-          position: absolute;
-          height: 40px;
-          width: 40px;
-          left: 10px;
-          bottom: 4px;
-          background-color: white;
-          transition: 0.4s;
-      }
+.slider {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    left: 10px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
 
-      .slider-active {
-        transform: translate(60px);
-      }
+.slider-active {
+  transform: translate(60px);
+}
 
-      .switch-active {
-        background-color: black;
-      }
+.switch-active {
+  background-color: black;
+}
 
-      /* Schriftart und Ausrichtung des Texts */
-      .toggle-label {
-          font-family: Arial, sans-serif;
-          text-align: center;
-          display: inline-block;
-          margin: 0 10px;
-          position: absolute;
-          top: 15px;
-      }
+/* Schriftart und Ausrichtung des Texts */
+.toggle-label {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: inline-block;
+    margin: 0 10px;
+    position: absolute;
+    top: 15px;
+}
 
-      #FFNN {
-        left: 5px;
-        color: white;
-        display: none;
-      }
+#FFNN {
+  left: 5px;
+  color: white;
+  display: none;
+}
 
-      #RNN {
-        right: 5px;
-        color: black;
-      }
+#RNN {
+  right: 5px;
+  color: black;
+}
+
+.text-center {
+  text-align: center;
+}
+
+#progressbar-container{
+  background-color: #ccc;
+  width: 100%;
+  position: relative;
+}
+
+#progressbar{
+  position: absolute;
+  left: 0;
+  width: 0%;
+  height: 20px;
+  background-color: black;
+}
+
+.testmodel{
+  min-width: 800px;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #e3e3e3;
+}
+
+.testmodel #slider-value {
+  font-size: 15px;
+}
+
+.testmodel .custom-slider {
+  height: 10px;
+}

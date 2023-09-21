@@ -7,7 +7,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0/dist/tf.min.js"></script>
   <!-- Import Plotly.js -->
   <script src="https://cdn.plot.ly/plotly-2.24.1.min.js" charset="utf-8"></script>
-  <!-- add style sheet -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,23 +21,38 @@
             </button>
           </a>
         </header>
-        <div class="autocomplete-container">
-          <textarea type="text" id="textInput" placeholder="Start Typing" rows="6"></textarea>
-          <textarea type="text" class="suggestions" id="suggestions" rows="6" disabled></textarea>
+        <div class="text-center">
+          <div class="autocomplete-container">
+            <textarea type="text" id="textInput" placeholder="Start Typing" rows="6"></textarea>
+            <textarea type="text" class="suggestions" id="suggestions" rows="6" disabled></textarea>
+          </div>
+          <div class="slider-container">
+            <input type="range" min="1" max="10" id="predictedInt" value="2" class="custom-slider"/>
+            <div id="slider-value">Number of predicted words 1</div>
+          </div>
+          <h2>Choose Model</h2>
+          <div id="toggleModel" class="toggle-switch">
+              <span class="slider" id="slider"></span>
+              <label class="toggle-label" id="RNN">RNN</label>
+              <label class="toggle-label" id="FFNN">FFNN</label>
+          </div>
         </div>
-        <div class="slider-container">
-          <input type="range" min="1" max="10" id="predictedInt" value="2" class="custom-slider"/>
-          <div id="slider-value">1</div>
+        <div class="testmodel">
+          <h2>Test Model</h2>
+          <div class="slider-container">
+            <input type="range" min="1" max="10" id="testNextWords" value="2" class="custom-slider"/>
+            <div id="slider-value">Right prediction in the next 1 word(s)</div>
+          </div>
+          <button id="testButton">Test</button>
+          <div id="progressbar-container">
+            <div id="progressbar"></div>
+          </div>
+          <h3 id="score"></h3>
         </div>
-        <div id="toggleModel" class="toggle-switch">
-            <span class="slider" id="slider"></span>
-            <label class="toggle-label" id="RNN">RNN</label>
-            <label class="toggle-label" id="FFNN">FFNN</label>
-        </div>
-<!-- Import the main script file -->
 <script src="tokenzier.js"></script>
-<script src="main.js"></script>
+<script src="model.js"></script>
 <script src="testModel.js"></script>
+<script src="main.js"></script>
       
 </body>
 </html>

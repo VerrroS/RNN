@@ -1,8 +1,31 @@
-async function testModel(){
-    let validationData = await loadValidationData();
-    predictValidationData(validationData);
+const testNextWords = document.getElementById("testNextWords");
+const score = document.getElementById("score");
+const progressbar = document.getElementById("progressbar");
+let nextWords = 2;
+
+function removePunctuation(text) {
+    var punctuation = /[\.,?!]/g;
+    var newText = text.replace(punctuation, "");
+    return newText;
+  }
+
+function prepareValidationData(validationData){
+    validationData = String(validationData);
+    validationData = removePunctuation(validationData);
+    validationData = validationData.split(" ");
+    for (let i = 0; i < validationData.length; i++){
+        validationData[i] = validationData[i].toLowerCase();
+        //console.log(validationData[i]);
+    }
+    return validationData;
 }
 
+
+async function testModel(){
+    let validationData = await loadValidationData();
+    validationData = prepareValidationData(validationData);
+    predictValidationData(validationData, nextWords);
+}
 
 async function loadValidationData() {
     path = `./trainingData/validationData.txt`;
@@ -10,18 +33,30 @@ async function loadValidationData() {
     return await response.text();
     }
 
-async function predictValidationData(validationData) {
-    validationData = validationData.split(" ");
-    for (let i = 0; i < validationData.length; i++) {
-        const word = validationData[i].toLowerCase();
-        console.log(model);
-        predictedWords = await predictNextWordsUsingModel(model, word, 1);
-        console.log(predictedWords);
-        if (predictedWords.includes(validationData[i+1])) {
-            console.log("Richtig");
+async function predictValidationData(validationData, nextWords) {
+    let rightCounter = 0;
+    let progress = 0;
+    for (let i = 0; i < validationData.length - 1; i++) { 
+        const word = validationData[i];
+        const nextWord = validationData[i + 1]; 
+        console.log("next Word " + nextWord);
+        let predictedWords = await currentModel.predictNextWordsUsingModel(word, nextWords);
+        predictedWords = predictedWords.split(" ")
+        predictedWords = Array.from(predictedWords);
+        if (predictedWords.includes(nextWord)) {
+            rightCounter++;
         }
-        else {
-            console.log("Falsch");
-        }
+        progress = Math.round((i / validationData.length) * 100);
+        progressbar.style.width = `${progress}%`;
     }
+    probability = Math.round((rightCounter / validationData.length) * 10000) / 100;
+    score.innerHTML = `The probability that the right next word is in the ${nextWords} next predicted words is ${probability}%`;
 }
+
+function HandleNextWordsChanged(e){
+    nextWords = e.target.value;
+    console.log(nextWords);
+}
+
+
+testNextWords.addEventListener('input', HandleNextWordsChanged);

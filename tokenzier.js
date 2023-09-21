@@ -19,7 +19,6 @@ class Tokenizer {
     }
 
     async initialize() {
-        // Warte auf die Ergebnisse der asynchronen Funktionen und speichere sie.
         this.wordIndex = await this.wordIndexPromise;
         this.maxSequenceLen = await this.maxSequenceLenPromise;
     }
@@ -27,7 +26,6 @@ class Tokenizer {
     async textsToSequences(texts) {
         await this.initialize();
 
-        // split into array of words
         texts = texts.split(" ");
         var textLength = texts.length;
         const sequence = [];
