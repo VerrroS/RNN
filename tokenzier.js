@@ -1,22 +1,21 @@
-async function getMaxSequenceLength(type) {
-
-    const myPath = `./tfjs_models/${type}/max_sequence_len.txt`;
+async function getMaxSequenceLength() {
+    const myPath = `./tokenizer/max_sequence_len.txt`;
     const response = await fetch(myPath);
     const data = await response.text();
     return data;
 }
 
-async function getWordIndex(type) {
-    const myPath = `./tfjs_models/${type}/wordIndex.json`;
+async function getWordIndex() {
+    const myPath = `./tokenizer/wordIndex.json`;
     const response = await fetch(myPath);
     const data = await response.json();
     return data;
 }
 
 class Tokenizer {
-    constructor(type) {
-        this.wordIndexPromise = getWordIndex(type);
-        this.maxSequenceLenPromise = getMaxSequenceLength(type);
+    constructor() {
+        this.wordIndexPromise = getWordIndex();
+        this.maxSequenceLenPromise = getMaxSequenceLength();
     }
 
     async initialize() {

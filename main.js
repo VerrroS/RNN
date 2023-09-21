@@ -53,21 +53,13 @@ function SetPredictedInt(event) {
 }
 
 async function predictNextWordsUsingModel(model, inputText, numWords) {
-    console.log("predictNextWordsUsingModel");
-    let predictedIndex;
-    const tokenizer = new Tokenizer("RNN");
+    const tokenizer = new Tokenizer();
         await tokenizer.initialize();
         for (let i = 0; i < numWords; i++) {
             const tokenList = await tokenizer.textsToSequences(inputText);
             const paddedTokenList = await tokenizer.padSequences([tokenList]);
             let predicted = model.predict(tf.tensor(paddedTokenList), [1, 1]);
-            if (currentModel == "RNN") {
-                predictedIndex = argMax(predicted.dataSync());
-            }
-            else {
-                predictedIndex = predicted.dataSync();
-                predictedIndex = predictedIndex.indexOf(Math.max(...predictedIndex));
-            }
+            let predictedIndex = argMax(predicted.dataSync());
             let outputWord = await tokenizer.getWordByIndex(predictedIndex);
             inputText += " " + outputWord;
         }
