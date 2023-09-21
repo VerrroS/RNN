@@ -12,6 +12,7 @@ function main(){
     console.log("DOM Content loaded");
     loadModel("RNN");
     focusTextInput();
+    testModel();
 }
 
 async function loadModel(type) {
@@ -33,11 +34,11 @@ async function HandleTextInput(event) {
 async function predict() {
     if (inputText != null) {
         predicted = await predictNextWordsUsingModel(model, inputText, predictNextWords);
-        SetPredictedVisual();   
+        SetPredictedVisual(predicted);   
     }
 }
 
-function SetPredictedVisual() {
+function SetPredictedVisual(predicted) {
     suggestions.innerHTML = predicted;
     if (inputText.length > 0) {
         suggestions.style.display = "block";

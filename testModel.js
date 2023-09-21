@@ -1,57 +1,27 @@
-async function testModel(currentModel){
+async function testModel(){
     let validationData = await loadValidationData();
-    let predictions = predictValidationData(validationData);
-    let accuracies = evaluatePredictions(validationData, predictions);
+    predictValidationData(validationData);
 }
 
-
-function evaluatePredictions(validationData, predictions) {
-    const kValues = [1, 5, 10, 20, 100];
-    const accuracies = {};
-
-    for (const k of kValues) {
-        accuracies[k] = 0;
-    }
-
-    for (let i = 0; i < validationData.length; i++) {
-        const trueNextWords = validationData[i].slice(initialSequenceLength);
-        const predictedWords = predictions[i];
-
-        for (const k of kValues) {
-            if (predictedWords.slice(0, k).includes(trueNextWords[0])) {
-                accuracies[k]++;
-            }
-        }
-    }
-
-    const totalSentences = validationData.length;
-
-    for (const k of kValues) {
-        const accuracy = accuracies[k] / totalSentences;
-        console.log(`Accuracy @ ${k}: ${accuracy}`);
-    }
-    return accuracies;
-}
 
 async function loadValidationData() {
-    path = `./tfjs_models/validationData.json`;
+    path = `./trainingData/validationData.txt`;
     const response = await fetch(path);
-    return await response.json();
+    return await response.text();
     }
 
-function predictValidationData(validationData) {
-    for (const sentence of validationData) {
-        const initialSequence = sentence.slice(0, initialSequenceLength);
-        const predictedWords = [];
-
-        for (let i = 0; i < predictedSequenceLength; i++) {
-            const predictedWord = predictNextWord(initialSequence);
-            predictedWords.push(predictedWord);
-            initialSequence.shift();
-            initialSequence.push(predictedWord);
+async function predictValidationData(validationData) {
+    validationData = validationData.split(" ");
+    for (let i = 0; i < validationData.length; i++) {
+        const word = validationData[i].toLowerCase();
+        console.log(model);
+        predictedWords = await predictNextWordsUsingModel(model, word, 1);
+        console.log(predictedWords);
+        if (predictedWords.includes(validationData[i+1])) {
+            console.log("Richtig");
         }
-
-        predictions.push(predictedWords);
+        else {
+            console.log("Falsch");
+        }
     }
-    return predictions;
 }
