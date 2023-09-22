@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Language Model mit RNN - Dokumentation</title>
+        <title>Next Word Prediction - Dokumentation</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -12,24 +12,61 @@
               </div>
               <a href="/">
                 <button>
-                  <div class="label">Zurück zur App</div>
+                  <div class="label">Back to the app</div>
                 </button>
               </a>
             </header>
         <div class="content">
+          <p>Die beiden Modelle wurden in Python trainiert und anschließened als json Datein für 
+            TensorFlowjs gespeichert. Als Trainingsdaten wurden die ersten XX Wörter aus dem Buch
+            "The Adventures of Sherlock Holmes" von Sir Arthur Conan Doyle verwendet. Die Daten wurden
+            mit dem Tokenizer von TensorFlowjs in ein Array aus Zahlen umgewandelt. Die Zahlen repräsentieren
+            die einzelnen Wörter. Die Modelle wurden mit dem Framework TensorFlow Keras trainiert.
+          </p>
           <h2>Verwendete Frameworks</h2>
           <h3>Modell Training</h3>
           <ul>
             <li>TensorFlow Keras</li>
-            <li></li>
+            <li>TensorFlowjs</li>
+            <li>Numpy</li>
           </ul>
           <h3>Web Applikation</h3>
           <ul>
             <li><a href="https://www.tensorflow.org/js">Tensorflow.js</a></li>
           </ul>
         <h2>Tokenizer</h2>
+        <img src="images/wörterZuZahlen.png" alt="Tokenizer" width="100%">
+        <p>Nachdem die Wörter in Zahlen umgewandlet wurden wird der Text anhand seiner Zeilenumbrücken aufgeteilt. 
+          FÜr jede Zeile werden dann die aufeinanderfolgenden Wörter in ein Array geschrieben. Am Beispielsatz "Das ist ein Beispielsatz"
+          würden die Arrays [Das, ist] [Das, ist, ein] [Das, ist, ein, Beispielsatz] entstehen. Anschließend
+          bekommen die Arrays ein Padding, sodass alle Arrays die gleiche Länge haben. </p>
+          <pre><code>
+              input_sequences = []
+              for line in text.split('\n'):
+                  token_list = tokenizer.texts_to_sequences([line])[0]
+                  for i in range(1, len(token_list)):
+                  n_gram_sequence = token_list[:i+1]
+                  input_sequences.append(n_gram_sequence)
+
+              max_sequence_len = max([len(seq) for seq in input_sequences])
+              input_sequences = np.array(pad_sequences(input_sequences, maxlen=max_sequence_len, padding='pre'))
+          </code></pre>
+          <img src="images/padding.png">
+          <p>Gelernt wird dann, dass nach den Wörtern "Das ist" das Wort "ein" folgt und nach "Das ist ein" das Wort
+          "Beispielsatz" folgt.
+        </p>
+        <img src="images/lernen.png">
         <h2>RNN Architektur</h2>
         <h2>FFNN Architektur</h2>
+        <h2>Testen</h2>
+        <p>Die Modelle werden getestet, indem gezählt wird, wie oft die richtige Vorhersage in den als nächstes vorhergesagten Wörtern 
+          vorkommt. Dabei hat der Benutzende die Möglichkeit die Anzahl der vorhergesagten Wörter zu bestimmen.
+          <pre>
+            <code>
+              
+            </code>
+          </pre>
+        </p>
         <h2>Ressourcen</h2>
         <ul>
           <li><a href="https://medium.com/@andrew.w.sale/deploying-text-classification-from-keras-to-tensorflow-js-92c614dca4ec">Tutorial für die Interation von TensorFlow Keras in JavaScript</a></li>

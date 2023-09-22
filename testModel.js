@@ -1,6 +1,7 @@
 const testNextWords = document.getElementById("testNextWords");
 const score = document.getElementById("score");
 const progressbar = document.getElementById("progressbar");
+const sliderValueNextWords = document.getElementById("slider-value-nextWords");
 let nextWords = 2;
 
 function removePunctuation(text) {
@@ -35,6 +36,7 @@ async function loadValidationData() {
 
 async function predictValidationData(validationData, nextWords) {
     let rightCounter = 0;
+    let total = 0;
     let progress = 0;
     for (let i = 0; i < validationData.length - 1; i++) { 
         const word = validationData[i];
@@ -46,16 +48,18 @@ async function predictValidationData(validationData, nextWords) {
         if (predictedWords.includes(nextWord)) {
             rightCounter++;
         }
+        total++;
         progress = Math.round((i / validationData.length) * 100);
         progressbar.style.width = `${progress}%`;
     }
-    probability = Math.round((rightCounter / validationData.length) * 10000) / 100;
+    probability = Math.round((rightCounter / total) * 10000) / 100;
     score.innerHTML = `The probability that the right next word is in the ${nextWords} next predicted words is ${probability}%`;
 }
 
 function HandleNextWordsChanged(e){
     nextWords = e.target.value;
-    console.log(nextWords);
+    const text = `Right prediction in the next ${nextWords} word(s)`;
+    sliderValueNextWords.innerHTML = text;
 }
 
 

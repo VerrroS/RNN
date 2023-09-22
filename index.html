@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Next Word Prediction</title>
-
-  <!-- Import TensorFlow.js 3.0-->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0/dist/tf.min.js"></script>
-  <!-- Import Plotly.js -->
   <script src="https://cdn.plot.ly/plotly-2.24.1.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,7 +15,7 @@
           </div>
           <a href="/documentation.html">
             <button>
-              <div>Dokumentation</div>
+              <div>Documentation</div>
             </button>
           </a>
         </header>
@@ -41,7 +39,7 @@
           <h2>Test Model</h2>
           <div class="slider-container">
             <input type="range" min="1" max="10" id="testNextWords" value="2" class="custom-slider"/>
-            <div id="slider-value">Right prediction in the next 1 word(s)</div>
+            <div id="slider-value-nextWords">Right prediction in the next 2 word(s)</div>
           </div>
           <button id="testButton">Test</button>
           <div id="progressbar-container">
