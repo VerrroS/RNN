@@ -17,28 +17,35 @@
               </a>
             </header>
         <div class="content">
-          <p>Die beiden Modelle wurden in Python trainiert und anschließened als json Datein für 
-            TensorFlowjs gespeichert. Als Trainingsdaten wurden die ersten XX Wörter aus dem Buch
-            "The Adventures of Sherlock Holmes" von Sir Arthur Conan Doyle verwendet. Die Daten wurden
-            mit dem Tokenizer von TensorFlowjs in ein Array aus Zahlen umgewandelt. Die Zahlen repräsentieren
-            die einzelnen Wörter. Die Modelle wurden mit dem Framework TensorFlow Keras trainiert.
+          <p>Die beiden Wortvorhersagemodelle wurden in Python trainiert und anschließened als json Datein für 
+            TensorFlowjs gespeichert. Als Trainingsdaten wurden die ersten 2500 Wörter aus dem Buch
+            <a href="https://archive.org/details/adventures_holmes">"The Adventures of Sherlock Holmes"</a> von Sir Arthur Conan Doyle verwendet.
           </p>
           <h2>Verwendete Frameworks</h2>
           <h3>Modell Training</h3>
           <ul>
-            <li>TensorFlow Keras</li>
-            <li>TensorFlowjs</li>
-            <li>Numpy</li>
+            <li><a href="https://www.tensorflow.org/api_docs/python/tf/keras">TensorFlow Keras</a><br><p>Mit der TensorFlow Keras API können die Deep Learning
+              Modelle erstellt und trainiert werden.
+            </p></li>
+            <li><a href="https://pypi.org/project/tensorflowjs/">TensorFlowjs</a> <br><p>Das trainierte Modell wird mithilfe von TensorFlowjs im Json 
+              Format gespeichert. So ist es möglich das Modell in der Web Applikation zu verwenden.
+            </p></li>
+            <li><a href="https://numpy.org/">Numpy</a> <br><p>Numpy wurde für die Datenverarbeitung und -manipulation verwendet, insbesondere bei der Aufteilung des Texts in Sequenzen und beim Padding der Sequenzen.</p></li>
           </ul>
           <h3>Web Applikation</h3>
           <ul>
-            <li><a href="https://www.tensorflow.org/js">Tensorflow.js</a></li>
+            <li><a href="https://www.tensorflow.org/js">Tensorflow.js</a><br><p>TensorFlow.js wird verwendet um die beiden Modelle in der Web Applikation
+              zu laden und die Vorhersagen zu machen.</p></li>
           </ul>
         <h2>Tokenizer</h2>
         <img src="images/wörterZuZahlen.png" alt="Tokenizer" width="100%">
-        <p>Nachdem die Wörter in Zahlen umgewandlet wurden wird der Text anhand seiner Zeilenumbrücken aufgeteilt. 
-          FÜr jede Zeile werden dann die aufeinanderfolgenden Wörter in ein Array geschrieben. Am Beispielsatz "Das ist ein Beispielsatz"
-          würden die Arrays [Das, ist] [Das, ist, ein] [Das, ist, ein, Beispielsatz] entstehen. Anschließend
+        <p>
+          Die Textdaten wurden zunächst in Zahlen umgewandelt, um sie für das neuronale Netzwerk zugänglich zu machen. 
+          Dabei wurde der Text anhand seiner Zeilenumbrüche aufgeteilt. Diese Aufteilung wurde gewählt, da sie in vielen 
+          Textdatensätzen eine natürliche Trennung der Absätze ermöglicht. Dadurch können wir das Modell darauf trainieren, 
+          die Wahrscheinlichkeit des nächsten Wortes basierend auf den vorherigen Worten in einem zusammenhängenden Text zu schätzen.
+          Für jede Zeile werden dann die aufeinanderfolgenden Wörter in ein Array geschrieben. Am Beispielsatz "Das ist ein Beispielsatz"
+          würden die Arrays [Das, ist] [Das, ist, ein] [Das, ist, ein, Beispielsatz] entstehen. Die Wörter werden One-hot codiert. Anschließend
           bekommen die Arrays ein Padding, sodass alle Arrays die gleiche Länge haben. </p>
           <pre><code>
               input_sequences = []
@@ -57,13 +64,183 @@
         </p>
         <img src="images/lernen.png">
         <h2>RNN Architektur</h2>
+        <pre>
+          <code>
+            model = Sequential()
+            model.add(Embedding(total_words, 300, input_length=max_sequence_len-1))
+            model.add(LSTM(300))
+            model.add(Dense(total_words, activation='softmax'))
+
+            model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+            model.fit(X, y, epochs=100, verbose=1)
+          </code>
+        </pre>
+        <p>
+          Das Modell besteht aus einem Embedding Layer, einem LSTM Layer und einem Dense Layer.
+          Der Embedding Layer ist ein Lookup Layer, der die Wörter in Vektoren umwandelt.
+          Der LSTM Layer ist ein RNN Layer, der die Vektoren sequentiell verarbeitet.
+          Der Dense Layer ist ein Fully Connected Layer, der die Ausgabe des LSTM Layers in die Anzahl der Wörter umwandelt.
+          Die Anzahl der Neuronen wurden durch ausprobieren ermittelt.
+        </p>
+        <table>
+            <tr>
+              <th>Embedding Layer</th>
+              <th>LSTM Layer</th>
+              <th>Epochs</th>
+              <th>Test</th>
+            </tr>
+            <tr>
+              <td>150</td>
+              <td>150</td>
+              <td>200</td>
+              <td>2,53</td>
+            </tr>
+            <tr>
+              <td>100</td>
+              <td>300</td>
+              <td>200</td>
+              <td>2,53</td>
+            </tr>
+            <tr>
+              <td>300</td>
+              <td>300</td>
+              <td>100</td>
+              <td>4,55</td>
+            </tr>
+            <tr>
+              <td>300</td>
+              <td>600</td>
+              <td>100</td>
+              <td>2,53</td>
+            </tr>
+            <tr>
+              <td>400</td>
+              <td>400</td>
+              <td>100</td>
+              <td>3,28</td>
+            </tr>
+            <tr>
+              <td>400</td>
+              <td>400</td>
+              <td>200</td>
+              <td>4,29</td>
+            </tr>
+          </table>
         <h2>FFNN Architektur</h2>
+        <pre>
+          <code>
+            model = Sequential()
+            model.add(Dense(150, input_shape=(max_sequence_len-1,), activation='relu'))
+            model.add(Dense(300, activation='relu'))
+            model.add(Dense(300, activation='relu'))
+            model.add(Dense(300, activation='relu'))
+            model.add(Dense(300, activation='relu'))
+            model.add(Dense(150, activation='relu'))
+            model.add(Dense(total_words, activation='softmax'))
+            
+            model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+            model.fit(X, y, epochs=100, verbose=1)
+          </code>
+        </pre>
+        <p>
+          Eine alternative Architektur, das Feedforward Neural Network (FFNN), wurde ebenfalls verwendet. 
+          Dieses Netzwerk besteht aus mehreren Dense-Schichten, die sequenzielle Daten direkt verarbeiten. 
+          Auch die Architektur des FFNN wurde durch ausprobieren ermittelt.
+        </p>
+        <table>
+            <tr>
+              <th>Input Layer</th>
+              <th>Hidden Layer</th>
+              <th>Neuronen</th>
+              <th>Epochs</th>
+              <th>Test</th>
+            </tr>
+            <tr>
+              <td>150</td>
+              <td>5</td>
+              <td>300</td>
+              <td>100</td>
+              <td>3,28</td>
+            </tr>
+            <tr>
+              <td>150</td>
+              <td>10</td>
+              <td>100</td>
+              <td>200</td>
+              <td>2,27</td>
+            </tr>
+            <tr>
+              <td>150</td>
+              <td>2</td>
+              <td>150</td>
+              <td>150</td>
+              <td>3,54</td>
+            </tr>
+            <tr>
+              <td>300</td>
+              <td>7</td>
+              <td>100</td>
+              <td>100</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        <h2>Vorhersage</h2>
+        <p>Die Vorhersage wird mit dem predict() Befehl von TensorFlowjs gemacht. Dabei wird der Eingabetext
+          verwendet um die nächsten Wörter vorherzusagen. Die Anzahl der vorhergesagten Wörter kann mit dem Slider eingestellt werden.
+          Das Eingabewort wird verwendet, um das nächste Wort vorherzusagen, und der generierte Text wird als neue Eingabe verwendet, 
+          um das darauf folgende Wort vorherzusagen. Dieser Prozess wird so oft wiederholt, wie vom Benutzer festgelegt. Die Vorhersagen 
+          basieren auf den Wahrscheinlichkeiten, die das Modell für jedes mögliche Wort berechnet.
+          <pre>
+            <code>
+              async predictNextWordsUsingModel(inputText, numWords) {
+                //console.log(typeof inputText)
+                const tokenizer = new Tokenizer();
+                    await tokenizer.initialize();
+                    for (let i = 0; i < numWords; i++) {
+                        const tokenList = await tokenizer.textsToSequences(inputText);
+                        const paddedTokenList = await tokenizer.padSequences([tokenList]);
+                        let predicted = this.model.predict(tf.tensor(paddedTokenList), [1, 1]);
+                        let predictedIndex = argMax(predicted.dataSync());
+                        let outputWord = await tokenizer.getWordByIndex(predictedIndex);
+                        inputText += " " + outputWord;
+                        //console.log(inputText);
+                    }
+                return inputText;
+                }
+            </code>
+          </pre>
         <h2>Testen</h2>
         <p>Die Modelle werden getestet, indem gezählt wird, wie oft die richtige Vorhersage in den als nächstes vorhergesagten Wörtern 
           vorkommt. Dabei hat der Benutzende die Möglichkeit die Anzahl der vorhergesagten Wörter zu bestimmen.
           <pre>
             <code>
-              
+              async function predictValidationData(validationData, nextWords) {
+                let rightCounter = 0;
+                let total = 0;
+                let progress = 0;
+                for (let i = 0; i < validationData.length - 1; i++) { 
+                    const word = validationData[i];
+                    const nextWord = validationData[i + 1]; 
+                    let predictedWords = await currentModel.predictNextWordsUsingModel(word, nextWords);
+                    predictedWords = predictedWords.split(" ")
+                    predictedWords = Array.from(predictedWords);
+                    if (predictedWords.includes(nextWord)) {
+                        rightCounter++;
+                    }
+                    total++;
+                    progress = Math.round((i / validationData.length) * 100);
+                    progressbar.style.width = `${progress}%`;
+                }
+                probability = Math.round((rightCounter / total) * 10000) / 100;
+                score.innerHTML = `The probability that the right next word is in the ${nextWords} next predicted words is ${probability}%`;
+            }
             </code>
           </pre>
         </p>

@@ -41,7 +41,6 @@ async function predictValidationData(validationData, nextWords) {
     for (let i = 0; i < validationData.length - 1; i++) { 
         const word = validationData[i];
         const nextWord = validationData[i + 1]; 
-        console.log("next Word " + nextWord);
         let predictedWords = await currentModel.predictNextWordsUsingModel(word, nextWords);
         predictedWords = predictedWords.split(" ")
         predictedWords = Array.from(predictedWords);

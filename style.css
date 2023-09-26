@@ -1,7 +1,7 @@
 body{
     color:#000;
     text-align:left;
-    font:400 16px Inter,sans-serif;
+    font:400 18px Inter,sans-serif;
     position:relative
 }
 
@@ -48,7 +48,7 @@ body{
 h1{
   color:#000;
   text-align:center;
-  font:400 36px Inter,sans-serif;
+  font:400 40px Inter,sans-serif;
   position:relative;
   align-self:stretch;
   height:34px
@@ -70,8 +70,23 @@ button{
 }
 
 a{
-  text-decoration:none!important
+  text-decoration:none!important;
+  color:blue;
 }
+
+li {
+  font-weight: bold;
+}
+
+li p {
+  font-weight: normal;
+  margin: 5px;
+}
+
+td, th {
+  padding: 5px 10px;
+}
+
 button:disabled{
   background:#c5d5ff
 }
@@ -86,8 +101,9 @@ pre {
   background-color: #1d1d1d;
   color: white;
   padding: 5px;
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
+  font-size: 15px;
 }
 
 #textInput{
