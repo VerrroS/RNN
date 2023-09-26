@@ -3,6 +3,7 @@
     <head>
         <title>Next Word Prediction - Dokumentation</title>
         <link rel="stylesheet" href="style.css">
+        <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
     </head>
     <body>
         <main class="index">
@@ -17,7 +18,11 @@
               </a>
             </header>
         <div class="content">
-          <p>Die beiden Wortvorhersagemodelle wurden in Python trainiert und anschließened als json Datein für 
+          <a href="https://github.com/VerrroS/rnn" id="github" target="_blank"><span class="iconify" data-icon="akar-icons:github-fill"></span></a>
+          <p>Die Applikation ermöglicht es der nutzenden Person eine Eingabe in das Textfeld zu machen. Aufgrund dieser Eingabe werden die nächsten Wörter vorhergesagt. Auch die Anzahl der 
+            zu vorhersagenden Worte kann eingestellt werden. Es wurden zwei verschiedene Modelle trainiert, ein RNN (Recurrent Neural Network) und ein FFNN (Feed Forward Neural Network). 
+            Die Modelle können mit dem Toggle Button ausgewählt werden.
+            Die beiden Wortvorhersagemodelle wurden mit Python in einem Jupyter Notebook trainiert und anschließened als json Datein für 
             TensorFlowjs gespeichert. Als Trainingsdaten wurden die ersten 2500 Wörter aus dem Buch
             <a href="https://archive.org/details/adventures_holmes">"The Adventures of Sherlock Holmes"</a> von Sir Arthur Conan Doyle verwendet.
           </p>
@@ -36,6 +41,7 @@
           <ul>
             <li><a href="https://www.tensorflow.org/js">Tensorflow.js</a><br><p>TensorFlow.js wird verwendet um die beiden Modelle in der Web Applikation
               zu laden und die Vorhersagen zu machen.</p></li>
+            <li><a href="https://iconify.design/">Iconify</a><br><p>Iconify ist eine große Icon Bibliothek. </p></li>
           </ul>
         <h2>Tokenizer</h2>
         <img src="images/wörterZuZahlen.png" alt="Tokenizer" width="100%">
@@ -84,10 +90,10 @@
         </p>
         <table>
             <tr>
-              <th>Embedding Layer</th>
-              <th>LSTM Layer</th>
+              <th>Neuronen im Embedding Layer</th>
+              <th>Neuronen im LSTM Layer</th>
               <th>Epochs</th>
-              <th>Test</th>
+              <th>Testergebnis (k=2)</th>
             </tr>
             <tr>
               <td>150</td>
@@ -105,7 +111,7 @@
               <td>300</td>
               <td>300</td>
               <td>100</td>
-              <td>4,55</td>
+              <td>4,04</td>
             </tr>
             <tr>
               <td>300</td>
@@ -119,7 +125,7 @@
               <td>100</td>
               <td>3,28</td>
             </tr>
-            <tr>
+            <tr class="highlight">
               <td>400</td>
               <td>400</td>
               <td>200</td>
@@ -149,18 +155,18 @@
         </p>
         <table>
             <tr>
-              <th>Input Layer</th>
-              <th>Hidden Layer</th>
-              <th>Neuronen</th>
+              <th>Neuronen im Input Layer</th>
+              <th>Anzahl Hidden Layer</th>
+              <th>Neuronen in Hidden Layers</th>
               <th>Epochs</th>
-              <th>Test</th>
+              <th>Testergebnis (k=2)</th>
             </tr>
             <tr>
               <td>150</td>
               <td>5</td>
               <td>300</td>
-              <td>100</td>
-              <td>3,28</td>
+              <td>150</td>
+              <td>2,02</td>
             </tr>
             <tr>
               <td>150</td>
@@ -174,28 +180,35 @@
               <td>2</td>
               <td>150</td>
               <td>150</td>
-              <td>3,54</td>
+              <td>2,78</td>
             </tr>
             <tr>
               <td>300</td>
-              <td>7</td>
+              <td>10</td>
+              <td>300</td>
+              <td>150</td>
+              <td>2,02</td>
+            </tr>
+            <tr class="highlight">
+              <td>300</td>
+              <td>2</td>
+              <td>600</td>
               <td>100</td>
-              <td>100</td>
-              <td></td>
+              <td>3,79</td>
             </tr>
             <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>600</td>
+              <td>2</td>
+              <td>800</td>
+              <td>100</td>
+              <td>1,52</td>
             </tr>
           </table>
         <h2>Vorhersage</h2>
         <p>Die Vorhersage wird mit dem predict() Befehl von TensorFlowjs gemacht. Dabei wird der Eingabetext
           verwendet um die nächsten Wörter vorherzusagen. Die Anzahl der vorhergesagten Wörter kann mit dem Slider eingestellt werden.
           Das Eingabewort wird verwendet, um das nächste Wort vorherzusagen, und der generierte Text wird als neue Eingabe verwendet, 
-          um das darauf folgende Wort vorherzusagen. Dieser Prozess wird so oft wiederholt, wie vom Benutzer festgelegt. Die Vorhersagen 
+          um das darauf folgende Wort vorherzusagen. Dieser Prozess wird so oft wiederholt, wie von der nutzenden Person festgelegt. Die Vorhersagen 
           basieren auf den Wahrscheinlichkeiten, die das Modell für jedes mögliche Wort berechnet.
           <pre>
             <code>
@@ -217,8 +230,10 @@
             </code>
           </pre>
         <h2>Testen</h2>
-        <p>Die Modelle werden getestet, indem gezählt wird, wie oft die richtige Vorhersage in den als nächstes vorhergesagten Wörtern 
-          vorkommt. Dabei hat der Benutzende die Möglichkeit die Anzahl der vorhergesagten Wörter zu bestimmen.
+        <p>Die Modelle können getestet werden, indem gezählt wird, wie oft die richtige Vorhersage in den als nächstes vorhergesagten Wörtern 
+          vorkommt. Dabei hat die nutzende Person die Möglichkeit die Anzahl der vorhergesagten Wörter zu bestimmen. Der Text, der zum Testen verwendet wird,
+          ist ein unbekannter Teil des selben Buches, das zum Trainieren verwendet wurde. Die Testfunktion gibt die Wahrscheinlichkeit aus, dass das richtige Wort
+          in den nächsten vorhergesagten Wörtern enthalten ist.
           <pre>
             <code>
               async function predictValidationData(validationData, nextWords) {

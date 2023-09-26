@@ -4,6 +4,7 @@ const suggestions = document.getElementById('suggestions');
 const slidervalue = document.getElementById('slider-value');
 const toggleModel = document.getElementById('toggleModel');
 const testButton = document.getElementById('testButton');
+const helpIcon = document.getElementsByClassName("help-icon");
 let predictNextWords = 2;
 let inputText = null;
 let currentModel;
@@ -70,9 +71,48 @@ function ToggleModelVisual() {
     }
 }
 
+function isTouchDevice() {
+    return 'ontouchstart' in document.documentElement;
+  }
+
+
+function openHelper(e) {
+    key = this.dataset.key;
+    helper = document.getElementById(key);
+    helper.style.display = "block";
+}
+
+function closeHelper(e) {
+    key = this.dataset.key;
+    helper = document.getElementById(key);
+    helper.style.display = "none";
+}
+
+
+function toggleHelper(e) {
+    key = this.dataset.key;
+    helper = document.getElementById(key);
+    if (helper.style.display == "none"){
+        helper.style.display = "block";
+    }
+    else{
+        helper.style.display = "none";
+    }
+}
+
 textInput.addEventListener('input', HandleTextInput);
 predictedInt.addEventListener('input', SetPredictedInt);
 toggleModel.addEventListener('click', ToggleModel);
 testButton.addEventListener('click', testModel);
+
+Array.from(helpIcon).forEach(element => {
+    if (isTouchDevice()){
+        element.addEventListener("click", toggleHelper)
+    }
+    else{
+        element.addEventListener("mouseover", openHelper),
+        element.addEventListener("mouseout", closeHelper)
+    }
+  });
 
 document.addEventListener('DOMContentLoaded', main);

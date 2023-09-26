@@ -1,3 +1,2 @@
 # Next Word Prediction Web Application
-## RNN
-## FFNN
+Documentation [here](rnn.veronikasimmering.de/documentation.html)

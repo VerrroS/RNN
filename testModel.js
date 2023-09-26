@@ -1,7 +1,7 @@
 const testNextWords = document.getElementById("testNextWords");
 const score = document.getElementById("score");
 const progressbar = document.getElementById("progressbar");
-const sliderValueNextWords = document.getElementById("slider-value-nextWords");
+const sliderValueNextWords = document.getElementById("slider-value-nextWordsTest");
 let nextWords = 2;
 
 function removePunctuation(text) {
@@ -57,7 +57,7 @@ async function predictValidationData(validationData, nextWords) {
 
 function HandleNextWordsChanged(e){
     nextWords = e.target.value;
-    const text = `Right prediction in the next ${nextWords} word(s)`;
+    const text = `Test the probability of the correct prediction in the next ${nextWords} word(s)`;
     sliderValueNextWords.innerHTML = text;
 }
 

@@ -5,6 +5,7 @@
   <title>Next Word Prediction</title>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.0.0/dist/tf.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-2.24.1.min.js" charset="utf-8"></script>
+  <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -36,10 +37,18 @@
           </div>
         </div>
         <div class="testmodel">
-          <h2>Test Model</h2>
+          <h2 id="slider-value-nextWordsTest">Test the probability of the correct prediction in the next 2 word(s)
+            <div class="help-icon" data-key="test-helper">
+              <span class="iconify" data-icon="bx:help-circle"></span>
+              <div id="test-helper">
+                Here's an example of how the testing function works:<br>
+                Consider the correct sentence "I am a student." The function predicts the next k words after "I am a." If the correct word "student" is among the k 
+                predicted words, the function marks it as a correct prediction. You can use the slider to choose how many words will be predicted.
+              </div>
+            </div>
+          </h2>
           <div class="slider-container">
             <input type="range" min="1" max="10" id="testNextWords" value="2" class="custom-slider"/>
-            <div id="slider-value-nextWords">Right prediction in the next 2 word(s)</div>
           </div>
           <button id="testButton">Test</button>
           <div id="progressbar-container">
