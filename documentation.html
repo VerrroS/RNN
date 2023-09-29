@@ -3,7 +3,9 @@
     <head>
         <title>Next Word Prediction - Dokumentation</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="prism.css">
         <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
+
     </head>
     <body>
         <main class="index">
@@ -53,7 +55,7 @@
           Für jede Zeile werden dann die aufeinanderfolgenden Wörter in ein Array geschrieben. Am Beispielsatz "Das ist ein Beispielsatz"
           würden die Arrays [Das, ist] [Das, ist, ein] [Das, ist, ein, Beispielsatz] entstehen. Die Wörter werden One-hot codiert. Anschließend
           bekommen die Arrays ein Padding, sodass alle Arrays die gleiche Länge haben. </p>
-          <pre><code>
+          <pre><code class="language-python">
               input_sequences = []
               for line in text.split('\n'):
                   token_list = tokenizer.texts_to_sequences([line])[0]
@@ -71,7 +73,7 @@
         <img src="images/lernen.png">
         <h2>RNN Architektur</h2>
         <pre>
-          <code>
+          <code class="language-python">
             model = Sequential()
             model.add(Embedding(total_words, 300, input_length=max_sequence_len-1))
             model.add(LSTM(300))
@@ -134,7 +136,7 @@
           </table>
         <h2>FFNN Architektur</h2>
         <pre>
-          <code>
+          <code class="language-python">
             model = Sequential()
             model.add(Dense(150, input_shape=(max_sequence_len-1,), activation='relu'))
             model.add(Dense(300, activation='relu'))
@@ -211,7 +213,7 @@
           um das darauf folgende Wort vorherzusagen. Dieser Prozess wird so oft wiederholt, wie von der nutzenden Person festgelegt. Die Vorhersagen 
           basieren auf den Wahrscheinlichkeiten, die das Modell für jedes mögliche Wort berechnet.
           <pre>
-            <code>
+            <code class="language-javascript">
               async predictNextWordsUsingModel(inputText, numWords) {
                 //console.log(typeof inputText)
                 const tokenizer = new Tokenizer();
@@ -235,7 +237,7 @@
           ist ein unbekannter Teil des selben Buches, das zum Trainieren verwendet wurde. Die Testfunktion gibt die Wahrscheinlichkeit aus, dass das richtige Wort
           in den nächsten vorhergesagten Wörtern enthalten ist.
           <pre>
-            <code>
+            <code class="language-javascript">
               async function predictValidationData(validationData, nextWords) {
                 let rightCounter = 0;
                 let total = 0;
@@ -266,5 +268,7 @@
         </ul>
         </div>
           </main>
+
+          <script src="prism.js"></script>
     </body>
 </html>
